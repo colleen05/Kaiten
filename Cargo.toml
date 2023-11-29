@@ -1,10 +1,18 @@
 [package]
 name = "Kaiten"
+description = "An abstract strategy game."
+repository = "https://github.com/colleen05/Kaiten"
 version = "0.1.0"
 edition = "2021"
 license = "BSD-Z"
 license-file = "LICENSE"
 authors = ["Colleen <colleen@colleen05.me>"]
+
+[[bin]]
+name = "client"
+
+[[bin]]
+name = "server"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
