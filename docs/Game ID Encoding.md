@@ -12,7 +12,7 @@ Create an encoding scheme for game session IDs ("codes") that:
 | Code length    | 6                    |
 | Possible codes | 20^6 (64,000,000)    |
 
-**Example code:** 7FX 99R
+**Example code:** `7FX 99R`
 
 ## Encoding table
 | Value         | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 |
