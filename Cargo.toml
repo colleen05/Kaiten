@@ -1,5 +1,5 @@
 [package]
-name = "Kaiten"
+name = "kaiten"
 description = "An abstract strategy game."
 repository = "https://github.com/colleen05/Kaiten"
 version = "0.1.0"
