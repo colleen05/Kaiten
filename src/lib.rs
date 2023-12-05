@@ -68,18 +68,8 @@ impl Move {
     pub fn from_bytes(bytes: [u8; 7]) -> Result<Move, &'static str> {
         let mut mv = Move::new();
 
-        let player = PlayerColour::from_byte(bytes[0]);
-        match player {
-            Ok(v) => mv.player = v,
-            Err(e) => return Err(e),
-        }
-
-        let axis = Axis::from_byte(bytes[1]);
-        match axis {
-            Ok(v) => mv.axis = v,
-            Err(e) => return Err(e),
-        }
-
+        mv.player = PlayerColour::from_byte(bytes[0])?;
+        mv.axis = Axis::from_byte(bytes[1])?;
         mv.position = bytes[2] as i32;
         mv.reverse = bytes[3] != 0;
 
