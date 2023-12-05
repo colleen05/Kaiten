@@ -48,9 +48,23 @@ impl Packet {
         bytes[0] = self.header_code();
 
         match self {
+            Packet::Info(message) => {
+                todo!("Implement Info packet serialisation.");
+            }
+            Packet::Move(mv) => {
+                for (i, b) in mv.as_bytes().unwrap().iter().enumerate() {
+                    bytes[1 + i] = *b;
+                }
+            }
+            Packet::Message(message) => {
+                todo!("Implement Message packet serialisation.");
+            }
+            Packet::UnknownError(message) => {
+                todo!("Implement UnknownError packet serialisation.");
+            }
             _ => {}
         }
 
-        todo!("Implement Packet serialisation.");
+        bytes
     }
 }
