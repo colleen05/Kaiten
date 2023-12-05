@@ -49,11 +49,11 @@ impl Axis {
 
 #[derive(Debug)]
 pub struct Move {
-    player: PlayerColour,
-    axis: Axis,
-    position: i32,
-    reverse: bool,
-    capture: Option<(i32, i32)>,
+    pub player: PlayerColour,
+    pub axis: Axis,
+    pub position: i32,
+    pub reverse: bool,
+    pub capture: Option<(i32, i32)>,
 }
 
 #[allow(clippy::new_without_default)]
