@@ -106,5 +106,5 @@ impl Move {
 
 #[derive(Debug)]
 pub struct Board {
-    pieces: Vec<Option<PlayerColour>>,
+    pub pieces: Vec<Option<PlayerColour>>,
 }
