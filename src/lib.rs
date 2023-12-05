@@ -1,6 +1,7 @@
 pub mod client;
 pub mod server;
 
+#[derive(Debug)]
 pub enum PlayerColour {
     Red,
     Black,
@@ -23,6 +24,7 @@ impl PlayerColour {
     }
 }
 
+#[derive(Debug)]
 pub enum Axis {
     Column,
     Row,
@@ -45,6 +47,7 @@ impl Axis {
     }
 }
 
+#[derive(Debug)]
 pub struct Move {
     player: PlayerColour,
     axis: Axis,
@@ -101,6 +104,7 @@ impl Move {
     }
 }
 
+#[derive(Debug)]
 pub struct Board {
     pieces: Vec<Option<PlayerColour>>,
 }

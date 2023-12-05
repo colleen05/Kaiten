@@ -1,5 +1,6 @@
 use crate::{Board, Move};
 
+#[derive(Debug)]
 pub enum Packet {
     Empty,
     Busy,
