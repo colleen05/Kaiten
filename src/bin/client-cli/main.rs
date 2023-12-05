@@ -1,6 +1,5 @@
-use kaiten::{client::*, hello::*};
+use kaiten::client::*;
 
 fn main() {
-    kaiten_hello();
     hello_client();
 }
