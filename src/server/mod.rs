@@ -1,4 +1,4 @@
-use crate::{Board, Move};
+use crate::Move;
 
 #[derive(Debug)]
 pub enum Packet {
@@ -44,6 +44,7 @@ impl Packet {
         }
     }
 
+    #[allow(unused_variables)]
     pub fn as_bytes(&self) -> [u8; 128] {
         let mut bytes = [0x00u8; 128];
         bytes[0] = self.header_code();
