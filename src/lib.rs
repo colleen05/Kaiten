@@ -60,11 +60,11 @@ pub struct Move {
 impl Move {
     pub fn new() -> Move {
         Move {
-            player: PlayerColour::Black,
+            player: PlayerColour::Red,
             axis: Axis::Column,
             position: 0,
             reverse: false,
-            capture: Some((0, 0)),
+            capture: None,
         }
     }
 
