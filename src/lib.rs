@@ -15,8 +15,8 @@ impl PlayerColour {
         }
     }
 
-    pub fn as_byte(self) -> u8 {
-        match self {
+    pub fn as_byte(&self) -> u8 {
+        match *self {
             Self::Red => 0x00,
             Self::Black => 0x01,
         }
@@ -37,8 +37,8 @@ impl Axis {
         }
     }
 
-    pub fn as_byte(self) -> u8 {
-        match self {
+    pub fn as_byte(&self) -> u8 {
+        match *self {
             Self::Column => 0x00,
             Self::Row => 0x01,
         }
@@ -81,7 +81,7 @@ impl Move {
         Ok(mv)
     }
 
-    pub fn as_bytes(self) -> Result<[u8; 7], String> {
+    pub fn as_bytes(&self) -> Result<[u8; 7], String> {
         let mut bytes = Vec::<u8>::with_capacity(7);
 
         bytes.push(self.player.as_byte());

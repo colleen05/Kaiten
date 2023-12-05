@@ -21,8 +21,8 @@ pub enum Packet {
 }
 
 impl Packet {
-    pub fn header_code(self) -> u8 {
-        match self {
+    pub fn header_code(&self) -> u8 {
+        match *self {
             Self::Empty => 0x00,
             Self::Busy => 0x01,
             Self::Info(_) => 0x02,
@@ -43,9 +43,13 @@ impl Packet {
         }
     }
 
-    pub fn as_bytes(self) -> [u8; 128] {
+    pub fn as_bytes(&self) -> [u8; 128] {
         let mut bytes = [0x00u8; 128];
         bytes[0] = self.header_code();
+
+        match self {
+            _ => {}
+        }
 
         todo!("Implement Packet serialisation.");
     }
