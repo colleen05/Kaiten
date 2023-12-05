@@ -91,7 +91,7 @@ impl Move {
         Ok(mv)
     }
 
-    pub fn as_bytes(self) -> Result<[u8; 7], &'static str> {
+    pub fn as_bytes(self) -> Result<[u8; 7], String> {
         let mut bytes = Vec::<u8>::with_capacity(7);
 
         bytes.push(self.player.as_byte());
@@ -106,7 +106,7 @@ impl Move {
 
         match bytes.as_slice().try_into() {
             Ok(v) => Ok(v),
-            Err(_) => Err("Could not convert Move to bytes."),
+            Err(e) => Err(format!("Could not convert Move to bytes: {}", e)),
         }
     }
 }
