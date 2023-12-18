@@ -44,29 +44,70 @@ impl Packet {
         }
     }
 
-    #[allow(unused_variables)]
-    pub fn as_bytes(&self) -> [u8; 128] {
-        let mut bytes = [0x00u8; 128];
-        bytes[0] = self.header_code();
+    pub fn from_bytes(bytes: [u8; 128]) -> Result<Packet, &'static str> {
+        let type_byte = bytes[0];
 
+        match type_byte {
+            0x00 => Ok(Packet::Empty),
+            0x01 => Ok(Packet::Busy),
+            0x02 => todo!("Implement Info packet deserialisation."),
+            0x03 => Ok(Packet::UnknownCommand),
+            0x04 => Ok(Packet::IllegalCommand),
+            0x05 => Ok(Packet::JoinDenied),
+            0x06 => Ok(Packet::JoinAccepted),
+            0x07 => Ok(Packet::Kick),
+            0x08 => Ok(Packet::GameBegin),
+            0x09 => Ok(Packet::GameEnd),
+            0x0a => Ok(Packet::TurnBegin),
+            0x0b => Ok(Packet::TurnEnd),
+            0x0c => Ok(Packet::UnknownAction),
+            0x0d => Ok(Packet::IllegalAction),
+            0x0e => todo!("Implement Move packet deserialisation."),
+            0x0f => todo!("Implement Message packet deserialisation."),
+            0x10 => todo!("Implement UnknownError packet deserialisation."),
+            _ => Err(
+                "first byte indicated an unknown packet type (byte must be in range 0x00..=0x10).",
+            ),
+        }
+    }
+
+    pub fn as_bytes(&self) -> Result<[u8; 128], String> {
+        // Initialise byte arrays for final packet data and enum variant data.
+        let mut packet_bytes = [0xffu8; 128];
+        let mut variant_bytes = Vec::<u8>::with_capacity(127);
+
+        // Set first byte of packet to variant type.
+        packet_bytes[0] = self.header_code();
+
+        // Get variant data.
         match self {
-            Packet::Info(message) => {
-                todo!("Implement Info packet serialisation.");
-            }
-            Packet::Move(mv) => {
-                for (i, b) in mv.as_bytes().unwrap().iter().enumerate() {
-                    bytes[1 + i] = *b;
+            Packet::Info(message) | Packet::Message(message) | Packet::UnknownError(message) => {
+                let bytes = message.as_bytes();
+
+                if bytes.len() > 126 {
+                    return Err(String::from(
+                        "string exceeded length limit of 126 characters.",
+                    ));
                 }
+
+                variant_bytes.extend_from_slice(message.as_bytes());
+                variant_bytes.push(0x00);
             }
-            Packet::Message(message) => {
-                todo!("Implement Message packet serialisation.");
-            }
-            Packet::UnknownError(message) => {
-                todo!("Implement UnknownError packet serialisation.");
-            }
+            Packet::Move(mv) => variant_bytes.extend_from_slice(&mv.as_bytes()?),
             _ => {}
         }
 
-        bytes
+        assert!(
+            variant_bytes.len() <= 127,
+            "valid packet could not be generated: Packet variant serialisation exceeded length of 127 bytes."
+        );
+
+        // Fill remaining packet bytes with variant data.
+        for (i, b) in variant_bytes.iter().enumerate() {
+            packet_bytes[1 + i] = *b;
+        }
+
+        // Return packet data.
+        Ok(packet_bytes)
     }
 }

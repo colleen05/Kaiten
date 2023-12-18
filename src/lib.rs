@@ -99,7 +99,7 @@ impl Move {
 
         match bytes.as_slice().try_into() {
             Ok(v) => Ok(v),
-            Err(e) => Err(format!("Could not convert Move to bytes: {}", e)),
+            Err(e) => Err(format!("could not convert Move to bytes: {}", e)),
         }
     }
 }
