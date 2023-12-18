@@ -45,7 +45,6 @@ impl Packet {
     }
 
     pub fn from_bytes(bytes: [u8; 128]) -> Result<Packet, &'static str> {
-        // Determine which variant to return
         let type_byte = bytes[0];
 
         match type_byte {
@@ -64,12 +63,14 @@ impl Packet {
             0x0c => Ok(Packet::UnknownAction),
             0x0d => Ok(Packet::IllegalAction),
             0x0e => {
-                let mv_bytes: [u8; 7] = bytes[1..8].try_into().unwrap();
-                Ok(Packet::Move(Move::from_bytes(mv_bytes)?))
+                let mv_bytes: [u8; 7] = bytes[1..8].try_into().unwrap(); // This should never fail, as the array is always 128 bytes.
+                Ok(Packet::Move(Move::from_bytes(mv_bytes)?)) // Propogate any errors from Move deserialisation.
             }
             0x02 | 0x0f | 0x10 => {
+                // Split at first 0x00 for null-terminated string.
                 let mut message_split = bytes[1..].split(|b| *b == 0);
 
+                // If a split could be made, decode the first half as UTF-8, otherwise just use an empty string.
                 let message_string = match message_split.nth(0) {
                     Some(message_bytes) => {
                         match String::from_utf8(Vec::<u8>::from(message_bytes)) {
@@ -80,6 +81,7 @@ impl Packet {
                     None => String::new(),
                 };
 
+                // Return the appropriate variant containing the message string.
                 Ok(match type_byte {
                     0x02 => Packet::Info(message_string),
                     0x0f => Packet::Message(message_string),
@@ -103,6 +105,7 @@ impl Packet {
 
         // Get variant data.
         match self {
+            // All message-containing variants can be serialised in the same way.
             Packet::Info(message) | Packet::Message(message) | Packet::UnknownError(message) => {
                 let bytes = message.as_bytes();
 
@@ -113,9 +116,11 @@ impl Packet {
                 }
 
                 variant_bytes.extend_from_slice(message.as_bytes());
-                variant_bytes.push(0x00);
+                variant_bytes.push(0x00); // Make sure string ends in null terminator
             }
+            // The Move varriant must be specially serialised.
             Packet::Move(mv) => variant_bytes.extend_from_slice(&mv.as_bytes()?),
+            // Other variants have no additional data.
             _ => {}
         }
 
