@@ -50,7 +50,7 @@ impl Packet {
         match type_byte {
             0x00 => Ok(Packet::Empty),
             0x01 => Ok(Packet::Busy),
-            0x02 => todo!("Info packet deserialisation."),
+            /* 0x02: Deferred Packet::Info deserialisation */
             0x03 => Ok(Packet::UnknownCommand),
             0x04 => Ok(Packet::IllegalCommand),
             0x05 => Ok(Packet::JoinDenied),
@@ -62,9 +62,28 @@ impl Packet {
             0x0b => Ok(Packet::TurnEnd),
             0x0c => Ok(Packet::UnknownAction),
             0x0d => Ok(Packet::IllegalAction),
-            0x0e => todo!("Move packet deserialisation."),
-            0x0f => todo!("Message packet deserialisation."),
-            0x10 => todo!("UnknownError packet deserialisation."),
+            0x0e => {
+                let mv_bytes: [u8; 7] = bytes[1..8].try_into().unwrap();
+                Ok(Packet::Move(Move::from_bytes(mv_bytes)?))
+            }
+            0x02 | 0x0f | 0x10 => {
+                let mut message_split = bytes[1..].split(|b| *b == 0);
+                let mut message_string = String::new();
+
+                if let Some(message_bytes) = message_split.nth(0) {
+                    match String::from_utf8(Vec::<u8>::from(message_bytes)) {
+                        Ok(message) => message_string = message,
+                        Err(_) => return Err("invalid utf-8 string."),
+                    }
+                }
+
+                Ok(match type_byte {
+                    0x02 => Packet::Info(message_string),
+                    0x0f => Packet::Message(message_string),
+                    0x10 => Packet::UnknownError(message_string),
+                    _ => Packet::Empty,
+                })
+            }
             _ => Err(
                 "first byte indicated an unknown packet type (byte must be in range 0x00..=0x10).",
             ),
