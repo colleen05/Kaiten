@@ -50,7 +50,7 @@ impl Packet {
         match type_byte {
             0x00 => Ok(Packet::Empty),
             0x01 => Ok(Packet::Busy),
-            0x02 => todo!("Implement Info packet deserialisation."),
+            0x02 => todo!("Info packet deserialisation."),
             0x03 => Ok(Packet::UnknownCommand),
             0x04 => Ok(Packet::IllegalCommand),
             0x05 => Ok(Packet::JoinDenied),
@@ -62,9 +62,9 @@ impl Packet {
             0x0b => Ok(Packet::TurnEnd),
             0x0c => Ok(Packet::UnknownAction),
             0x0d => Ok(Packet::IllegalAction),
-            0x0e => todo!("Implement Move packet deserialisation."),
-            0x0f => todo!("Implement Message packet deserialisation."),
-            0x10 => todo!("Implement UnknownError packet deserialisation."),
+            0x0e => todo!("Move packet deserialisation."),
+            0x0f => todo!("Message packet deserialisation."),
+            0x10 => todo!("UnknownError packet deserialisation."),
             _ => Err(
                 "first byte indicated an unknown packet type (byte must be in range 0x00..=0x10).",
             ),
