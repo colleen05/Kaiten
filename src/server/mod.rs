@@ -81,7 +81,7 @@ impl Packet {
                     0x02 => Packet::Info(message_string),
                     0x0f => Packet::Message(message_string),
                     0x10 => Packet::UnknownError(message_string),
-                    _ => Packet::Empty,
+                    _ => unreachable!(),
                 })
             }
             _ => Err(
