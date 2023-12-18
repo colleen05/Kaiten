@@ -45,6 +45,7 @@ impl Packet {
     }
 
     pub fn from_bytes(bytes: [u8; 128]) -> Result<Packet, &'static str> {
+        // Determine which variant to return
         let type_byte = bytes[0];
 
         match type_byte {
@@ -68,14 +69,16 @@ impl Packet {
             }
             0x02 | 0x0f | 0x10 => {
                 let mut message_split = bytes[1..].split(|b| *b == 0);
-                let mut message_string = String::new();
 
-                if let Some(message_bytes) = message_split.nth(0) {
-                    match String::from_utf8(Vec::<u8>::from(message_bytes)) {
-                        Ok(message) => message_string = message,
-                        Err(_) => return Err("invalid utf-8 string."),
+                let message_string = match message_split.nth(0) {
+                    Some(message_bytes) => {
+                        match String::from_utf8(Vec::<u8>::from(message_bytes)) {
+                            Ok(message) => message,
+                            Err(_) => return Err("invalid utf-8 string."),
+                        }
                     }
-                }
+                    None => String::new(),
+                };
 
                 Ok(match type_byte {
                     0x02 => Packet::Info(message_string),
