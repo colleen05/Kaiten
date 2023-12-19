@@ -58,8 +58,8 @@ The format of the packet data may differ depending on the type of packet it is. 
         <td>Capture?</td>
         <td>Whether or not the player has made a capture.</td>
         <td>
-            <code>0x01</code>: No - Player has not captured. Capture column row can be ignored.<br>
-            <code>0x00</code>: Yes - Player has captured. Capture column row contain capture position.<br>
+            <code>0x01</code>: <b>No</b> - Player has not captured. Capture column row can be ignored.<br>
+            <code>0x00</code>: <b>Yes</b> - Player has captured. Capture column row contain capture position.<br>
         </td>
     </tr>
     <tr>
