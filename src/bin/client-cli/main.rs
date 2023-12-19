@@ -1,4 +1,4 @@
-use kaiten::{client::Packet, Axis, Move, PlayerColour};
+use kaiten::{client::packet::*, Axis, Move, PlayerColour};
 
 fn main() {
     let _p_move = Packet::Move(Move {
