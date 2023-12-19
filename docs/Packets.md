@@ -1,6 +1,6 @@
 # Packets
 ## Overview
-Packets 128-byte chunks of data that servers and clients use to communicate. For Kaiten, each packet contains all the information required for a specific request, and must fit within 128 bytes. The first byte is the type byte, which tells the receiver what kind of packet it is. The rest of the packet outside of the data range (as indicated by the type byte) can be ignored.
+Packets are 128-byte chunks of data that servers and clients use to communicate. For Kaiten, each packet contains all the information required for a specific request, and must fit within 128 bytes. The first byte is the type byte, which tells the receiver what kind of packet it is. The rest of the packet outside of the data range (as indicated by the type byte) can be ignored.
 
 **Size:** 128 bytes\
 **Strcture:**
