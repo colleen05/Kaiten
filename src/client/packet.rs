@@ -8,6 +8,7 @@ pub enum Packet {
     Leave,
     Move(Move),
     UnknownCommand,
+    IllegalCommand,
     Message(String),
 }
 
@@ -20,7 +21,8 @@ impl Packet {
             Packet::Leave => 0x03,
             Packet::Move(_) => 0x04,
             Packet::UnknownCommand => 0x05,
-            Packet::Message(_) => 0x06,
+            Packet::IllegalCommand => 0x06,
+            Packet::Message(_) => 0x07,
         }
     }
 
@@ -37,7 +39,8 @@ impl Packet {
                 Ok(Packet::Move(Move::from_bytes(mv_bytes)?)) // Propogate any errors from Move deserialisation.
             }
             0x05 => Ok(Packet::UnknownCommand),
-            0x06 => {
+            0x06 => Ok(Packet::IllegalCommand),
+            0x07 => {
                 // Split at first 0x00 for null-terminated string.
                 let mut message_split = bytes[1..].split(|b| *b == 0);
 
