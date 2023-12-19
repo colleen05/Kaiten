@@ -14,14 +14,12 @@ The format of the packet data may differ depending on the type of packet it is. 
 <table>
     <tr>
         <th>Offset</th>
-        <th>Size</th>
         <th>Field</th>
         <th>Description</th>
         <th>Range</th>
     </tr>
     <tr>
         <td><code>0x00</code></td>
-        <td>1 byte</td>
         <td>Player</td>
         <td>Which player made the move.</td>
         <td>
@@ -31,7 +29,6 @@ The format of the packet data may differ depending on the type of packet it is. 
     </tr>
     <tr>
         <td><code>0x01</code></td>
-        <td>1 byte</td>
         <td>Axis</td>
         <td>Whether the player slid a row or column.</td>
         <td>
@@ -41,7 +38,6 @@ The format of the packet data may differ depending on the type of packet it is. 
     </tr>
     <tr>
         <td><code>0x02</code></td>
-        <td>1 byte</td>
         <td>Position</td>
         <td>The row or column being slid by the player. <i>(Zero-indexed)</i></td>
         <td>
@@ -50,7 +46,6 @@ The format of the packet data may differ depending on the type of packet it is. 
     </tr>
     <tr>
         <td><code>0x03</code></td>
-        <td>1 byte</td>
         <td>Reverse</td>
         <td>The direction in which the row or column was slid.</td>
         <td>
@@ -60,7 +55,6 @@ The format of the packet data may differ depending on the type of packet it is. 
     </tr>
     <tr>
         <td><code>0x04</code></td>
-        <td>1 byte</td>
         <td>Capture?</td>
         <td>Whether or not the player has made a capture.</td>
         <td>
@@ -70,7 +64,6 @@ The format of the packet data may differ depending on the type of packet it is. 
     </tr>
     <tr>
         <td><code>0x05</code></td>
-        <td>1 byte</td>
         <td>Capture Column</td>
         <td>The column of the captured piece.</td>
         <td>
@@ -79,7 +72,6 @@ The format of the packet data may differ depending on the type of packet it is. 
     </tr>
     <tr>
         <td><code>0x06</code></td>
-        <td>1 byte</td>
         <td>Capture Row</td>
         <td>The row of the captured piece.</td>
         <td>
@@ -88,7 +80,8 @@ The format of the packet data may differ depending on the type of packet it is. 
     </tr>
 </table>
 
-*Offsets are relative to the type byte. I.e., offset `0x00` is byte `0x01` in the packet data.*
+*Offsets are relative to the type byte. I.e., offset `0x00` is byte `0x01` in the packet data.*\
+*All fields are 1 byte in size.*
 
 ## Server Packet Types
 | Value | Name              | Description                   | Format                |
