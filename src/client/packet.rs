@@ -7,7 +7,7 @@ pub enum Packet {
     JoinRequest,
     Leave,
     Move(Move),
-    UnknownCommand,
+    InvalidCommand,
     IllegalCommand,
     Message(String),
 }
@@ -20,7 +20,7 @@ impl Packet {
             Packet::JoinRequest => 0x02,
             Packet::Leave => 0x03,
             Packet::Move(_) => 0x04,
-            Packet::UnknownCommand => 0x05,
+            Packet::InvalidCommand => 0x05,
             Packet::IllegalCommand => 0x06,
             Packet::Message(_) => 0x07,
         }
@@ -38,7 +38,7 @@ impl Packet {
                 let mv_bytes: [u8; 7] = bytes[1..8].try_into().unwrap(); // This should never fail, as the array is always 128 bytes.
                 Ok(Packet::Move(Move::from_bytes(mv_bytes)?)) // Propogate any errors from Move deserialisation.
             }
-            0x05 => Ok(Packet::UnknownCommand),
+            0x05 => Ok(Packet::InvalidCommand),
             0x06 => Ok(Packet::IllegalCommand),
             0x07 => {
                 // Split at first 0x00 for null-terminated string.
