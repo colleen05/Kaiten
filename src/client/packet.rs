@@ -64,7 +64,7 @@ impl Packet {
         }
     }
 
-    pub fn as_bytes(&self) -> Result<[u8; 128], String> {
+    pub fn to_bytes(&self) -> Result<[u8; 128], String> {
         // Initialise byte arrays for final packet data and enum variant data.
         let mut packet_bytes = [0xffu8; 128];
         let mut variant_bytes = Vec::<u8>::with_capacity(127);
@@ -74,7 +74,7 @@ impl Packet {
 
         // Get variant data.
         match self {
-            Packet::PlayerMove(mv) => variant_bytes.extend_from_slice(&mv.as_bytes()?),
+            Packet::PlayerMove(mv) => variant_bytes.extend_from_slice(&mv.to_bytes()?),
             Packet::Message(message) => {
                 let bytes = message.as_bytes();
 

@@ -13,7 +13,7 @@ impl PlayerColour {
         }
     }
 
-    pub fn as_byte(&self) -> u8 {
+    pub fn to_byte(&self) -> u8 {
         match *self {
             Self::Red => 0x00,
             Self::Black => 0x01,

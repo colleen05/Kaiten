@@ -13,7 +13,7 @@ impl Axis {
         }
     }
 
-    pub fn as_byte(&self) -> u8 {
+    pub fn to_byte(&self) -> u8 {
         match *self {
             Self::Column => 0x00,
             Self::Row => 0x01,

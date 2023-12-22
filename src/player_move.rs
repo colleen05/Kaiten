@@ -37,11 +37,11 @@ impl PlayerMove {
         Ok(mv)
     }
 
-    pub fn as_bytes(&self) -> Result<[u8; 7], String> {
+    pub fn to_bytes(&self) -> Result<[u8; 7], String> {
         let mut bytes = Vec::<u8>::with_capacity(7);
 
-        bytes.push(self.player.as_byte());
-        bytes.push(self.axis.as_byte());
+        bytes.push(self.player.to_byte());
+        bytes.push(self.axis.to_byte());
         bytes.push(self.position as u8);
         bytes.push(self.reverse as u8);
 
