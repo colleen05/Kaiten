@@ -1,4 +1,4 @@
-use crate::Move;
+use crate::PlayerMove;
 
 #[derive(Debug)]
 pub enum Packet {
@@ -16,7 +16,7 @@ pub enum Packet {
     TurnEnd,
     InvalidMove,
     IllegalMove,
-    Move(Move),
+    PlayerMove(PlayerMove),
     Message(String),
     UnknownError(String),
 }
@@ -38,7 +38,7 @@ impl Packet {
             Packet::TurnEnd => 0x0b,
             Packet::InvalidMove => 0x0c,
             Packet::IllegalMove => 0x0d,
-            Packet::Move(_) => 0x0e,
+            Packet::PlayerMove(_) => 0x0e,
             Packet::Message(_) => 0x0f,
             Packet::UnknownError(_) => 0x10,
         }
@@ -64,7 +64,7 @@ impl Packet {
             0x0d => Ok(Packet::IllegalMove),
             0x0e => {
                 let mv_bytes: [u8; 7] = bytes[1..8].try_into().unwrap(); // This should never fail, as the array is always 128 bytes.
-                Ok(Packet::Move(Move::from_bytes(mv_bytes)?)) // Propogate any errors from Move deserialisation.
+                Ok(Packet::PlayerMove(PlayerMove::from_bytes(mv_bytes)?)) // Propogate any errors from PlayerMove deserialisation.
             }
             0x02 | 0x0f | 0x10 => {
                 // Split at first 0x00 for null-terminated string.
@@ -118,8 +118,8 @@ impl Packet {
                 variant_bytes.extend_from_slice(message.as_bytes());
                 variant_bytes.push(0x00); // Make sure string ends in null terminator
             }
-            // The Move varriant must be specially serialised.
-            Packet::Move(mv) => variant_bytes.extend_from_slice(&mv.as_bytes()?),
+            // The PlayerMove varriant must be specially serialised.
+            Packet::PlayerMove(mv) => variant_bytes.extend_from_slice(&mv.as_bytes()?),
             // Other variants have no additional data.
             _ => {}
         }
